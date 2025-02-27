@@ -2,30 +2,23 @@ package com.gmg.model;
 
 
 public class ChatMessage {
-	private String id;
-	private String roomId;
+	private int id;
+	private int roomId;
 	private String content;
 
-	public ChatMessage(String id, String roomId, String content) {
+	public ChatMessage(int id, int roomId, String content) {
 		this.id = id;
 		this.roomId = roomId;
 		this.content = content;
 	}
 
-	public String getId() {
+	public int getId() {
 		return id;
 	}
 
-	public void setId(String id) {
-		this.id = id;
-	}
 
-	public String getRoomId() {
+	public int getRoomId() {
 		return roomId;
-	}
-
-	public void setRoomId(String roomId) {
-		this.roomId = roomId;
 	}
 
 

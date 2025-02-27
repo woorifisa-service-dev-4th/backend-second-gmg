@@ -1,28 +1,34 @@
 package com.gmg.model;
 
+import java.time.LocalDateTime;
 
 public class ChatRoom {
-	private String id;
-	private String name;
+	int id;
 
-	public ChatRoom(String id, String name) {
+	private String roomName;
+	private LocalDateTime createdAt;
+
+	public ChatRoom(int id, String name) {
 		this.id = id;
-		this.name = name;
+		this.roomName = name;
+		this.createdAt = LocalDateTime.now();
+	}
+	public ChatRoom(int id, String name,LocalDateTime createdAt) {
+		this.id = id;
+		this.roomName = name;
+		this.createdAt = createdAt;
 	}
 
-	public String getId() {
+	public int getId() {
 		return id;
 	}
 
-	public void setId(String id) {
-		this.id = id;
+	public String getRoomName() {
+		return roomName;
 	}
 
-	public String getName() {
-		return name;
+	public LocalDateTime getCreatedAt() {
+		return createdAt;
 	}
 
-	public void setName(String name) {
-		this.name = name;
-	}
 }

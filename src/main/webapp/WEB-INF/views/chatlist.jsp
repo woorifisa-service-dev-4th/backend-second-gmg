@@ -7,7 +7,7 @@
 <ul>
   <c:forEach var="room" items="${chatRooms}">
     <li>
-      <a href="/chat/chatroom?roomId=${room.id}">${room.name}</a>
+      <a href="/chat/chatroom?roomId=${room.id}">${room.roomName}</a>
     </li>
   </c:forEach>
 </ul>

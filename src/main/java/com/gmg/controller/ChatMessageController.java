@@ -18,7 +18,7 @@ public class ChatMessageController implements Controller {
 		request.setCharacterEncoding("UTF-8");
 		response.setCharacterEncoding("UTF-8");
 
-		String roomId = request.getParameter("roomId");
+		int roomId = Integer.parseInt(request.getParameter("roomId"));
 		String action = request.getParameter("action");
 
 		if ("send".equals(action)) {

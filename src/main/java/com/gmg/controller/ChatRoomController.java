@@ -18,11 +18,12 @@ public class ChatRoomController implements Controller {
 		request.setCharacterEncoding("UTF-8");
 		response.setCharacterEncoding("UTF-8");
 		String action = request.getParameter("action");
+
 		if ("create".equals(action)) {
 			String roomName = request.getParameter("roomName");
 			chatRoomDAO.createChatRoom(roomName);
 		}
-		List<ChatRoom> chatRooms = chatRoomDAO.getAllChatRooms();
+		List<ChatRoom> chatRooms = chatRoomDAO.findAll();
 		request.setAttribute("chatRooms", chatRooms);
 		return "chatlist";
 	}
