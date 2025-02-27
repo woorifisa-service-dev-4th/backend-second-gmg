@@ -17,23 +17,22 @@ public class ChatListController implements ControllerV1 {
 
     @Override
     public void process(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // 요청에서 chatRoomId 가져오기
-        String chatRoomIdParam = request.getParameter("chatRoomId");
+        String roomIdParam = request.getParameter("roomId");
 
-        if (chatRoomIdParam == null || chatRoomIdParam.isEmpty()) {
+        if (roomIdParam == null || roomIdParam.isEmpty()) {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "채팅방 ID가 필요합니다.");
             return;
         }
 
         try {
-            int chatRoomId = Integer.parseInt(chatRoomIdParam);
+            long roomId = Long.parseLong(roomIdParam);
 
-            // DB에서 특정 채팅방의 채팅 내역 조회
-            List<ChatMessage> messages = chatRoomDAO.getChatMessages(chatRoomId);
+            // 해당 채팅방(roomId)의 메시지 조회
+            List<ChatMessage> messages = chatRoomDAO.getChatMessages(roomId);
 
             // JSP로 데이터 전달
             request.setAttribute("messages", messages);
-            request.setAttribute("chatRoomId", chatRoomId);
+            request.setAttribute("roomId", roomId);
 
             RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/chatroom/detail.jsp");
             dispatcher.forward(request, response);

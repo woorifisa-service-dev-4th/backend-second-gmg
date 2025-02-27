@@ -15,23 +15,22 @@ public class ChatAddController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String chatRoomIdParam = request.getParameter("chatRoomId");
-        String message = request.getParameter("message");
+        String roomIdParam = request.getParameter("roomId");
+        String content = request.getParameter("content");
 
-        // chatRoomId와 message가 올바르게 전달되었는지 확인
-        if (chatRoomIdParam == null || chatRoomIdParam.isEmpty() || message == null || message.trim().isEmpty()) {
+        if (roomIdParam == null || roomIdParam.isEmpty() || content == null || content.trim().isEmpty()) {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "채팅방 ID와 메시지를 입력하세요.");
             return;
         }
 
         try {
-            int chatRoomId = Integer.parseInt(chatRoomIdParam);
+            long roomId = Long.parseLong(roomIdParam);
 
             // 채팅 메시지 저장
-            chatRoomDAO.insertChatMessage(chatRoomId, message);
+            chatRoomDAO.insertChatMessage(roomId, content);
 
-            // 메시지 추가 후 해당 채팅방으로 리디렉션
-            response.sendRedirect("chatList?chatRoomId=" + chatRoomId);
+            // 메시지 추가 후 채팅방으로 리디렉션
+            response.sendRedirect("chatList?roomId=" + roomId);
         } catch (NumberFormatException e) {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "유효한 채팅방 ID를 입력하세요.");
         }
