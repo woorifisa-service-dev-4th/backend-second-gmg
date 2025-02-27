@@ -1,33 +1,39 @@
 package dao;
 
-import model.ChatRoom;
+import model.ChatMessage;
 import util.DBUtil;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ChatRoomDAO {
+    public List<ChatMessage> getChatMessages(int chatRoomId) {
+        List<ChatMessage> messages = new ArrayList<>();
+        String sql = "SELECT * FROM chat_messages WHERE chat_room_id = ? ORDER BY created_at ASC";
 
-    public List<ChatRoom> getChatRooms() {
-        List<ChatRoom> chatRooms = new ArrayList<>();
-        String query = "SELECT id, name, user_count FROM chat_rooms ORDER BY id DESC";
+        try (Connection conn = DBUtil.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
-        try (Connection conn = DBUtil.getConnection(); // DBUtil 활용
-             PreparedStatement pstmt = conn.prepareStatement(query);
-             ResultSet rs = pstmt.executeQuery()) {
-
-            while (rs.next()) {
-                int id = rs.getInt("id");
-                String name = rs.getString("name");
-                int userCount = rs.getInt("user_count");
-
-                chatRooms.add(new ChatRoom(id, name, userCount));
+            pstmt.setInt(1, chatRoomId);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    ChatMessage message = new ChatMessage(
+                            rs.getInt("id"),
+                            rs.getInt("chat_room_id"),
+                            rs.getString("sender"),
+                            rs.getString("message"),
+                            rs.getTimestamp("created_at").toLocalDateTime()
+                    );
+                    messages.add(message);
+                }
             }
-        } catch (SQLException e) {
-            System.err.println("DB 조회 중 오류 발생: " + e.getMessage());
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        return chatRooms;
+
+        return messages;
     }
 }
